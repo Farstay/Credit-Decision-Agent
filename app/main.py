@@ -3,6 +3,7 @@ import time
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 
+
 from app.api.applications import router as applications_router
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")

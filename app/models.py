@@ -31,11 +31,15 @@ class Application(Base):
     purpose: Mapped[str] = mapped_column(String(255))
     term_months: Mapped[int] = mapped_column(Integer)
     status: Mapped[ApplicationStatus] = mapped_column(
-        Enum(ApplicationStatus), default=ApplicationStatus.pending
+        Enum(ApplicationStatus, native_enum=False, length=20),
+        default=ApplicationStatus.pending,
     )
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
 
-    decision: Mapped["Decision | None"] = relationship(back_populates="application")
+    decision: Mapped["Decision | None"] = relationship(
+        back_populates="application", lazy="selectin"
+    )
+
 
 
 
@@ -44,7 +48,7 @@ class Decision(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     application_id: Mapped[int] = mapped_column(ForeignKey("applications.id"))
-    decision: Mapped[DecisionType] = mapped_column(Enum(DecisionType))
+    decision: Mapped[DecisionType] = mapped_column(Enum(DecisionType, native_enum=False, length=20))
     confidence: Mapped[float] = mapped_column(Float)
     reasoning: Mapped[str] = mapped_column(String(2000))
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
