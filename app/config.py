@@ -6,6 +6,8 @@ class Settings(BaseSettings):
 
     database_url: str
     qdrant_url: str
+    ollama_url: str
+    ollama_model: str
 
 
 # единый объект настроек, импортируется по всему приложению
