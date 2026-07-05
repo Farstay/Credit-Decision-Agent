@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <!-- CHANGESET 1: таблица applications -->
+    <changeSet id="1-create-applications" author="nikbond">
+        <createTable tableName="applications">
+            <column name="id" type="serial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="applicant_name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount" type="float8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="monthly_income" type="float8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="purpose" type="varchar(255)"/>
+            <column name="term_months" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(20)" defaultValue="pending">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp" defaultValueComputed="NOW()"/>
+        </createTable>
+        <rollback>
+            <dropTable tableName="applications"/>
+        </rollback>
+    </changeSet>
+
+    <!-- CHANGESET 2: таблица decisions со связью на applications -->
+    <changeSet id="2-create-decisions" author="nikbond">
+        <createTable tableName="decisions">
+            <column name="id" type="serial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="application_id" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="fk_decision_application"
+                             references="applications(id)"/>
+            </column>
+            <column name="decision" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="confidence" type="float8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reasoning" type="varchar(2000)"/>
+            <column name="created_at" type="timestamp" defaultValueComputed="NOW()"/>
+        </createTable>
+        <rollback>
+            <dropTable tableName="decisions"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
