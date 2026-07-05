@@ -16,9 +16,4 @@ __pycache__/
 # Прочее
 *.log
 .pytest_cache/
-run.py
-test_conn.py
-test_qdrant.py
-test_rag_search.py
-test_agent.py
-test_llm.py
+debug/

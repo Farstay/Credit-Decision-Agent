@@ -1,12 +1,19 @@
 from pathlib import Path
-from sentence_transformers import SentenceTransformer
 from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, VectorParams, PointStruct
 
 from app.config import settings
 
 
-_model = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
+_model = None
+
+def _get_model():
+    global _model
+    if _model is None:
+        from sentence_transformers import SentenceTransformer
+        _model = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
+    return _model
+
 COLLECTION = "credit_rules"
 VECTOR_SIZE = 384
 
@@ -16,7 +23,7 @@ def get_qdrant() -> QdrantClient:
 
 
 def embed(text: str) -> list[float]:
-    return _model.encode(text).tolist()
+    return _get_model().encode(text).tolist()
 
 
 def index_rules():
