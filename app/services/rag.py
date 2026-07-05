@@ -6,7 +6,7 @@ from qdrant_client.models import Distance, VectorParams, PointStruct
 from app.config import settings
 
 
-_model = SentenceTransformer("all-MiniLM-L6-v2")
+_model = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
 COLLECTION = "credit_rules"
 VECTOR_SIZE = 384
 
